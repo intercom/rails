@@ -132,12 +132,16 @@ module ActiveSupport
       # Increment a cached value. This method uses the memcached incr atomic
       # operator and can only be used on values written with the +:raw+ option.
       # Calling it on a value not stored with +:raw+ will initialize that value
-      # to zero.
+      # to zero. :initial option can be used for initializing the value to 
+      # other than zero
       def increment(name, amount = 1, options = nil)
         options = merged_options(options)
+    
+        initial = options.has_key?(:initial) ? options[:initial] : amount
+    
         instrument(:increment, name, amount: amount) do
           rescue_error_with nil do
-            @data.with { |c| c.incr(normalize_key(name, options), amount, options[:expires_in]) }
+            @data.with { |c| c.incr(normalize_key(name, options), amount.to_i, options[:expires_in], initial.to_i) }
           end
         end
       end

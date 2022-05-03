@@ -141,7 +141,7 @@ module ActiveSupport
     
         instrument(:increment, name, amount: amount) do
           rescue_error_with nil do
-            @data.with { |c| c.incr(normalize_key(name, options), amount.to_i, options[:expires_in], initial.to_i) }
+            @data.with { |c| c.incr(normalize_key(name, options), amount, options[:expires_in], initial) }
           end
         end
       end

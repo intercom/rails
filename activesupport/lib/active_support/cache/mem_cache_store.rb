@@ -137,7 +137,7 @@ module ActiveSupport
       def increment(name, amount = 1, options = nil)
         options = merged_options(options)
     
-        initial = options.has_key?(:initial) ? options[:initial] : amount
+        initial = options.fetch(:initial, amount)
     
         instrument(:increment, name, amount: amount) do
           rescue_error_with nil do

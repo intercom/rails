@@ -1,3 +1,11 @@
+*   Add initial value support to MemCacheStore increment and decrement calls
+
+    Add the support for the `:initial` option when performing `MemCacheStore`
+    `increment` and `decrement` operations to leverage the same functionality
+    offered by the Dalli client underneath.
+
+    *Andrej Blagojević* and *Eugene Kenny*
+
 *   Fix and add protections for XSS in `ActionView::Helpers` and `ERB::Util`.
 
     Add the method `ERB::Util.xml_name_escape` to escape dangerous characters

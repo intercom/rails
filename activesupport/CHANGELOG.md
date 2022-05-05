@@ -4,7 +4,7 @@
     `increment` and `decrement` operations to leverage the same functionality
     offered by the Dalli client underneath.
 
-    *Andrej Blagojević* and *Eugene Kenny*
+    *Andrej Blagojević*, *Eugene Kenny*
 
 *   Fix and add protections for XSS in `ActionView::Helpers` and `ERB::Util`.
 

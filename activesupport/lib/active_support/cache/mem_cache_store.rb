@@ -148,9 +148,11 @@ module ActiveSupport
       end
 
       # Decrement a cached value. This method uses the memcached decr atomic
-      # operator and can only be used on values written with the +:raw+ option.
+      # operator and can only be used on values written with the +:raw+ option
+      # or intially set using a previous decrement call.
       # Calling it on a value not stored with +:raw+ will initialize that value
-      # to zero.
+      # to zero, if no initial option is set, the method will assume 0 as
+      # the initial value
       def decrement(name, amount = 1, options = nil)
         options = merged_options(options)
 

@@ -129,12 +129,23 @@ module ActiveSupport
         end
       end
 
-      # Increment a cached value. This method uses the memcached incr atomic
-      # operator and can only be used on values written with the +:raw+ option
-      # or initially set using a previous increment call.
-      # Calling it on a value not stored with :raw will fail and return nil.
-      # :initial option can be used for initializing the value to other than zero, if no
-      # initial option is set, the method will assume amount as intial value
+      # Increment a cached value. This method used the memcached incr atomic
+      # operator. Default behaviour will let the method set the initial value
+      # to 1 or the :amount: if it is not already set:
+      #
+      #   cache.increment("foo") # => "1"
+      #
+      # A different initial value can be provided using the +:initial: option:
+      #
+      #   cache.increment("bar", 1, initial: 100) # => "100"
+      #
+      # Alternatively, the method can be called on a value already stored with
+      # the +:raw: option:
+      #
+      #   cache.write("baz", 0, raw: true); cache.increment("baz") # => "1"
+      #
+      # Calling the method on a value not stored with +:raw+ or a previous
+      # #increment call will fail and return +nil+
       def increment(name, amount = 1, options = nil)
         options = merged_options(options)
 
@@ -148,11 +159,23 @@ module ActiveSupport
       end
 
       # Decrement a cached value. This method uses the memcached decr atomic
-      # operator and can only be used on values written with the +:raw+ option
-      # or intially set using a previous decrement call.
-      # Calling it on a value not stored with +:raw+ will initialize that value
-      # to zero, if no initial option is set, the method will assume 0 as
-      # the initial value
+      # operator. Default behaviour will let the method set the initial value
+      # to 0 (memcached does not support negative counters) or the :amount: if
+      # it is not already set:
+      #
+      #   cache.decrement("foo") # => "0"
+      #
+      # A different initial value can be provided using the +:initial: option:
+      #
+      #   cache.decrement("foo", 1, initial: 100) # => "100"
+      #
+      # Alternatively, the method can be called on a value already stored with
+      # the +:raw: option:
+      #
+      #   cache.write("baz", 1, raw: true); cache.decrement("baz") # => "0"
+      #
+      # Calling the method on a value not stored with +:raw+ or a previous
+      # #decrement call will fail and return +nil+
       def decrement(name, amount = 1, options = nil)
         options = merged_options(options)
 

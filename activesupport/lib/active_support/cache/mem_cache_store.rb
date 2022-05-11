@@ -129,23 +129,22 @@ module ActiveSupport
         end
       end
 
-      # Increment a cached value. This method used the memcached incr atomic
-      # operator. Default behaviour will let the method set the initial value
-      # to 1 or the :amount: if it is not already set:
+      # Increment a cached value using the memcached incr atomic operator.
+      # If the key is unset or has expired, it will be set to +amount+:
       #
       #   cache.increment("foo") # => "1"
-      #
-      # A different initial value can be provided using the +:initial: option:
+      # 
+      # A different initial value can be provided using the +:initial+ option:
       #
       #   cache.increment("bar", 1, initial: 100) # => "100"
       #
-      # Alternatively, the method can be called on a value already stored with
-      # the +:raw: option:
+      # To set a specific value, call #write passing <tt>raw: true</tt>:
       #
-      #   cache.write("baz", 0, raw: true); cache.increment("baz") # => "1"
+      #   cache.write("baz", 5, raw: true)
+      #   cache.increment("baz") # => "6"
       #
-      # Calling the method on a value not stored with +:raw+ or a previous
-      # #increment call will fail and return +nil+
+      # Incrementing a non-numeric value, or a value written without
+      # <tt>raw: true</tt>, will fail and return +nil+.
       def increment(name, amount = 1, options = nil)
         options = merged_options(options)
 

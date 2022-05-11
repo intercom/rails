@@ -144,20 +144,14 @@ class MemCacheStoreTest < ActiveSupport::TestCase
     end
   end
 
-  def test_decrement_initial
-    cache = lookup_store(raw: true)
-    cache.with_local_cache do
-      cache.decrement("foo", 1, initial: 2)
-      assert_equal "2", cache.read("foo")
-    end
+  def test_decrement_unset_key
+    assert_equal 0, @cache.decrement("foo")
+    assert_equal "0", @cache.read("foo", raw: true)
   end
 
-  def test_decrement_with_no_initial
-    cache = lookup_store(raw: true)
-    cache.with_local_cache do
-      cache.decrement("foo", 2)
-      assert_equal "0", cache.read("foo")
-    end
+  def test_decrement_unset_key_with_initial
+    assert_equal 100, @cache.decrement("foo", 1, initial: 100)
+    assert_equal "100", @cache.read("foo", raw: true)
   end
 
   def test_decrement_expires_in

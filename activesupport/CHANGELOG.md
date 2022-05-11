@@ -1,8 +1,8 @@
-*   Add initial value support to MemCacheStore increment and decrement calls
+*   Allow `ActiveSupport::Cache::MemCacheStore#increment` and
+    `ActiveSupport::Cache::MemCacheStore#decrement` to set new values.
 
-    Add the support for the `:initial` option when performing `MemCacheStore`
-    `increment` and `decrement` operations to leverage the same functionality
-    offered by the Dalli client underneath.
+    Previously incrementing or decrementing an unset key would fail and return
+    nil. A different initial value can be provided using the `:initial` option.
 
     *Andrej Blagojević*, *Eugene Kenny*
 

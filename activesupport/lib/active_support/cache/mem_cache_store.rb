@@ -160,6 +160,8 @@ module ActiveSupport
       end
 
       # Decrement a cached value using the memcached decr atomic operator.
+      # Returns the updated value.
+      #
       # If the key is unset or has expired, it will be set to 0. Memcached
       # does not support negative counters.
       #

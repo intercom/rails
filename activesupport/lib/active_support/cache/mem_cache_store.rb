@@ -165,16 +165,16 @@ module ActiveSupport
       # If the key is unset or has expired, it will be set to 0. Memcached
       # does not support negative counters.
       #
-      #   cache.decrement("foo") # => "0"
+      #   cache.decrement("foo") # => 0
       #
       # A different initial value can be provided using the +:initial+ option:
       #
-      #   cache.decrement("bar", 1, initial: 100) # => "100"
+      #   cache.decrement("bar", 1, initial: 100) # => 100
       #
       # To set a specific value, call #write passing <tt>raw: true</tt>:
       #
       #   cache.write("baz", 5, raw: true)
-      #   cache.decrement("baz") # => "4"
+      #   cache.decrement("baz") # => 4
       #
       # Decrementing a non-numeric value, or a value written without
       # <tt>raw: true</tt>, will fail and return +nil+.

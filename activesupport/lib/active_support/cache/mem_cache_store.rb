@@ -130,6 +130,8 @@ module ActiveSupport
       end
 
       # Increment a cached value using the memcached incr atomic operator.
+      # Returns the updated value.
+      #
       # If the key is unset or has expired, it will be set to +amount+:
       #
       #   cache.increment("foo") # => "1"

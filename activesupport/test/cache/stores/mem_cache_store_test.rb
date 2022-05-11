@@ -127,20 +127,14 @@ class MemCacheStoreTest < ActiveSupport::TestCase
     end
   end
 
-  def test_increment_initial
-    cache = lookup_store(raw: true)
-    cache.with_local_cache do
-      cache.increment("foo", 1, initial: 1)
-      assert_equal "1", cache.read("foo")
-    end
+  def test_increment_unset_key
+    assert_equal 1, @cache.increment("foo")
+    assert_equal "1", @cache.read("foo", raw: true)
   end
 
-  def test_increment_with_no_initial
-    cache = lookup_store(raw: true)
-    cache.with_local_cache do
-      cache.increment("foo", 2)
-      assert_equal "2", cache.read("foo")
-    end
+  def test_increment_unset_key_with_initial
+    assert_equal 100, @cache.increment("foo", 1, initial: 100)
+    assert_equal "100", @cache.read("foo", raw: true)
   end
 
   def test_increment_expires_in

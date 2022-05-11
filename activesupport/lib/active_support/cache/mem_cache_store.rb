@@ -133,7 +133,7 @@ module ActiveSupport
       # If the key is unset or has expired, it will be set to +amount+:
       #
       #   cache.increment("foo") # => "1"
-      # 
+      #
       # A different initial value can be provided using the +:initial+ option:
       #
       #   cache.increment("bar", 1, initial: 100) # => "100"
@@ -157,24 +157,23 @@ module ActiveSupport
         end
       end
 
-      # Decrement a cached value. This method uses the memcached decr atomic
-      # operator. Default behaviour will let the method set the initial value
-      # to 0 (memcached does not support negative counters) or the :amount: if
-      # it is not already set:
+      # Decrement a cached value using the memcached decr atomic operator.
+      # If the key is unset or has expired, it will be set to 0. Memcached
+      # does not support negative counters.
       #
       #   cache.decrement("foo") # => "0"
       #
-      # A different initial value can be provided using the +:initial: option:
+      # A different initial value can be provided using the +:initial+ option:
       #
-      #   cache.decrement("foo", 1, initial: 100) # => "100"
+      #   cache.decrement("bar", 1, initial: 100) # => "100"
       #
-      # Alternatively, the method can be called on a value already stored with
-      # the +:raw: option:
+      # To set a specific value, call #write passing <tt>raw: true</tt>:
       #
-      #   cache.write("baz", 1, raw: true); cache.decrement("baz") # => "0"
+      #   cache.write("baz", 5, raw: true)
+      #   cache.decrement("baz") # => "4"
       #
-      # Calling the method on a value not stored with +:raw+ or a previous
-      # #decrement call will fail and return +nil+
+      # Decrementing a non-numeric value, or a value written without
+      # <tt>raw: true</tt>, will fail and return +nil+.
       def decrement(name, amount = 1, options = nil)
         options = merged_options(options)
 

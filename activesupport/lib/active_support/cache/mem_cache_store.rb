@@ -134,16 +134,16 @@ module ActiveSupport
       #
       # If the key is unset or has expired, it will be set to +amount+:
       #
-      #   cache.increment("foo") # => "1"
+      #   cache.increment("foo") # => 1
       #
       # A different initial value can be provided using the +:initial+ option:
       #
-      #   cache.increment("bar", 1, initial: 100) # => "100"
+      #   cache.increment("bar", 1, initial: 100) # => 100
       #
       # To set a specific value, call #write passing <tt>raw: true</tt>:
       #
       #   cache.write("baz", 5, raw: true)
-      #   cache.increment("baz") # => "6"
+      #   cache.increment("baz") # => 6
       #
       # Incrementing a non-numeric value, or a value written without
       # <tt>raw: true</tt>, will fail and return +nil+.

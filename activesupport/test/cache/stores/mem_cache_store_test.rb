@@ -135,6 +135,15 @@ class MemCacheStoreTest < ActiveSupport::TestCase
   def test_increment_unset_key_with_initial
     assert_equal 100, @cache.increment("foo", 1, initial: 100)
     assert_equal "100", @cache.read("foo", raw: true)
+
+  def test_write_expires_at
+    cache = lookup_store(raw: true, namespace: nil)
+
+    Time.stub(:now, Time.now) do
+      assert_called_with client(cache), :set, [ "key_with_expires_at", "bar", 30 * 60, Hash ] do
+        cache.write("key_with_expires_at", "bar", expires_at: 30.minutes.from_now)
+      end
+    end
   end
 
   def test_increment_expires_in
@@ -305,6 +314,13 @@ class MemCacheStoreTest < ActiveSupport::TestCase
       assert_nil @cache.read(key)
       assert_equal false, @cache.fetch(key) { false }
     end
+  end
+
+  def test_can_read_multi_entries_raw_values_from_dalli_store
+    key = "test-with-nil-value-the-way-the-dalli-store-did"
+
+    @cache.instance_variable_get(:@data).with { |c| c.set(@cache.send(:normalize_key, key, nil), nil, 0, compress: false) }
+    assert_equal({}, @cache.send(:read_multi_entries, [key]))
   end
 
   private

@@ -44,7 +44,7 @@ group :rubocop do
 end
 
 group :doc do
-  gem "sdoc", ">= 2.3.2"
+  gem "sdoc", ">= 2.4.0"
   gem "redcarpet", "~> 3.2.3", platforms: :ruby
   gem "w3c_validators", "~> 1.3.6"
   gem "kindlerb", "~> 1.2.0"
@@ -140,7 +140,7 @@ platforms :ruby, :mswin, :mswin64, :mingw, :x64_mingw do
 
   group :db do
     gem "pg", "~> 1.3"
-    gem "mysql2", "~> 0.5", github: "brianmario/mysql2"
+    gem "mysql2", "~> 0.5"
   end
 end
 

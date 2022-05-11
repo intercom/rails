@@ -290,7 +290,7 @@ module ActiveSupport
           raw_values.each do |key, value|
             entry = deserialize_entry(value, raw: options[:raw])
 
-            unless entry.expired? || entry.mismatched?(normalize_version(keys_to_names[key], options))
+            unless entry.nil? || entry.expired? || entry.mismatched?(normalize_version(keys_to_names[key], options))
               values[keys_to_names[key]] = entry.value
             end
           end
@@ -335,8 +335,12 @@ module ActiveSupport
         def rescue_error_with(fallback)
           yield
         rescue Dalli::DalliError => error
-          ActiveSupport.error_reporter&.report(error, handled: true, severity: :warning)
           logger.error("DalliError (#{error}): #{error.message}") if logger
+          ActiveSupport.error_reporter&.report(
+            error,
+            severity: :warning,
+            source: "mem_cache_store.active_support",
+          )
           fallback
         end
     end
